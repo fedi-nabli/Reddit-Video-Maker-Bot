@@ -1,4 +1,3 @@
-from msvcrt import getche
 import toml
 from rich.console import Console
 import re
@@ -44,28 +43,28 @@ def check(value, checks, name):
       (isinstance(value, str) and re.match(checks["regex"], value) is None)
       or not isinstance(value, str)
     )
-  ): # FAILSTATE Value doesn't match regex, or has regex but is not a string
+  ): # FAILSTATE Value doesn't match regex, or has regex but is not a string.
     incorrect = True
 
   if (
     not incorrect
     and not hasattr(value, "__iter__")
     and (
-      ("nmin"in checks and checks["nmin"] is not None and value < checks["nmin"])
+      ("nmin" in checks and checks["nmin"] is not None and value < checks["nmin"])
       or ("nmax" in checks and checks["nmax"] is not None and value > checks["nmax"])
-    )
-  ):
-    incorrect = True
-
+      )
+    ):
+      incorrect = True
+    
   if (
     not incorrect
-    and not hasattr(value, "__iter__")
-    and (
-      ("nmin"in checks and checks["nmin"] is not None and len(value) < checks["nmin"])
-      or ("nmax" in checks and checks["nmax"] is not None and len(value) > checks["nmax"])
-    )
-  ):
-    incorrect = True
+    and hasattr(value, "__iter__")
+      and (
+        ("nmin" in checks and checks["nmin"] is not None and len(value) < checks["nmin"])
+        or ("nmax" in checks and checks["nmax"] is not None and len(value) > checks["nmax"])
+      )
+    ):
+      incorrect = True
 
   if incorrect:
     value = handle_input(
@@ -88,17 +87,21 @@ def check(value, checks, name):
         "oob_error", "Input out of bounds(Value too high/low/long/short)"
       ),
       options=get_check_value("options", None),
-      optional=get_check_value("optioanl", False)
+      optional=get_check_value("optional", False),
     )
-  return value
+
+    return value
 
 def crawl_and_check(obj: dict, path: list, checks: dict = {}, name=""):
   if len(path) == 0:
     return check(obj, checks, name)
+  
   if path[0] not in obj.keys():
     obj[path[0]] = {}
   obj[path[0]] = crawl_and_check(obj[path[0]], path[1:], checks, path[0])
+  
   return obj
+
 
 def check_vars(path, checks):
   global config
@@ -109,27 +112,32 @@ def check_toml(template_file, config_file) -> Tuple[bool, Dict]:
   config = None
   try:
     template = toml.load(template_file)
+  
   except Exception as error:
     console.print(f"[red bold]Encountered error when trying to load {template_file}: {error}")
     return False
-  
+
   try:
-    config = toml.load(template_file)
+    config = toml.load(config_file)
+  
   except toml.TomlDecodeError:
     console.print(
       f"""[blue]Couldn't read {config_file}.
-Overwrite it? (y/n)"""
+Overwrite it?(y/n)"""
     )
+  
     if not input().startswith("y"):
-      print("Unable to read config file, and not allowed to overwrite it. Giving up.")
+      print("Unable to read config, and not allowed to overwrite it. Giving up.")
       return False
+  
     else:
       try:
         with open(config_file, "w") as f:
           f.write("")
+    
       except:
         console.print(
-          f"[red bold]Failed to overwrite {config_file}. Giving up.\nSuggestions: check {config_file} permissions for the user."
+          f"[red bold]Failed to overwrite {config_file}. Giving up.\nSuggestion: check {config_file} permissions for the user."
         )
         return False
 
@@ -141,13 +149,13 @@ Creating it now."""
     try:
       with open(config_file, "x") as f:
         f.write("")
-      config = {}
+        config = {}
     except:
       console.print(
-        f"[red bold]Failed to write to {config_file}. Giving up.\nSuggestoins: check the folder's permissions for the user."
+        f"[red bold]Failed to write to {config_file}. Giving up.\nSuggestion: check the folder's permissions for the user."
       )
       return False
-  
+
   console.print(
     """\
 [blue bold]###############################

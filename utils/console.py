@@ -50,7 +50,7 @@ def handle_input(
     
   if default is not NotImplemented:
     console.print(
-      "[gree]"
+      "[green]"
       + message
       + '\n[blue bold]The default value is "'
       + str(default)
@@ -59,7 +59,7 @@ def handle_input(
     if input().casefold().startswith("y"):
       return default
   
-  if options in None:
+  if options is None:
     match = re.compile(match)
     console.print("[green bold]" + extra_info, no_wrap=True)
     while True:
@@ -68,8 +68,8 @@ def handle_input(
       if check_type is not False:
         try:
           user_input = check_type(user_input)
-          if (nmin is not None and len(user_input) < nmin) or (
-            nmax is not None and len(user_input) > nmax
+          if (nmin is not None and user_input < nmin) or (
+            nmax is not None and user_input > nmax
           ):
             # FAILSTATE Input out of bounds
             console.print("[red]" + oob_error)
