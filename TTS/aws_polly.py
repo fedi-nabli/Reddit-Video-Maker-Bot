@@ -5,21 +5,21 @@ from utils import settings
 import random
 
 voices = [
-    "Brian",
-    "Emma",
-    "Russell",
-    "Joey",
-    "Matthew",
-    "Joanna",
-    "Kimberly",
-    "Amy",
-    "Geraint",
-    "Nicole",
-    "Justin",
-    "Ivy",
-    "Kendra",
-    "Salli",
-    "Raveena",
+  "Brian",
+  "Emma",
+  "Russell",
+  "Joey",
+  "Matthew",
+  "Joanna",
+  "Kimberly",
+  "Amy",
+  "Geraint",
+  "Nicole",
+  "Justin",
+  "Ivy",
+  "Kendra",
+  "Salli",
+  "Raveena",
 ]
 
 
