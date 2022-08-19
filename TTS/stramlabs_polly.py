@@ -32,7 +32,7 @@ class StreamlabsPolly:
 
   def run(self, text, filepath, random_voice: bool = False):
     if random_voice:
-      voice = self.randomvoice()
+      voice = self.random_voice()
     else:
       if not settings.config["settings"]["tts"]["streamlabs_polly_voice"]:
         raise ValueError(
@@ -56,5 +56,5 @@ class StreamlabsPolly:
         except (KeyError, JSONDecodeError):
             print("Error occurred calling Streamlabs Polly")
 
-  def randomvoice(self):
+  def random_voice(self):
     return random.choice(self.voices)

@@ -33,7 +33,7 @@ class AWSPolly:
       session = Session(profile_name="polly")
       polly = session.client("polly")
       if random_voice:
-        voice = self.randomvoice()
+        voice = self.random_voice()
       else:
         if not settings.config["settings"]["tts"]["aws_polly_voice"]:
           raise ValueError(
@@ -71,5 +71,5 @@ class AWSPolly:
       )
       sys.exit(-1)
 
-  def randomvoice(self):
+  def random_voice(self):
     return random.choice(self.voices)
