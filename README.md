@@ -14,5 +14,8 @@ The only original thing being done is the editing and gathering of all materials
 - **At the moment**, this repository won't attempt to upload this content through this bot. It will give you a file that
   you will then have to upload manually. This is for the sake of avoiding any sort of community guideline issues.
 
+## Video
+Example folder contains a demo video.
+
 ## Inspiration
 This project is inspired by this github repo https://github.com/elebumm/RedditVideoMakerBot
