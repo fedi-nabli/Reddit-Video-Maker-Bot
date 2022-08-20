@@ -9,6 +9,7 @@ from utils.cleanup import cleanup
 from utils.console import print_markdown, print_step
 from utils import settings
 from utils.id import id
+from utils.version import check_version
 
 from video_creation.background import (
   download_background,
@@ -18,6 +19,8 @@ from video_creation.background import (
 from video_creation.final_video import make_final_video
 from video_creation.screenshot_downloader import download_screenshots_of_reddit_posts
 from video_creation.voices import save_text_to_mp3
+
+__VERSION__ = "1.0.0"
 
 print(
     """
@@ -33,6 +36,7 @@ print(
 print_markdown(
   "### Thanks for using this tool!"
 )
+check_version(__VERSION__)
 
 def main(POST_ID=None):
   reddit_object = get_subreddit_threads(POST_ID)
