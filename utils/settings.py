@@ -52,19 +52,19 @@ def check(value, checks, name):
     and (
       ("nmin" in checks and checks["nmin"] is not None and value < checks["nmin"])
       or ("nmax" in checks and checks["nmax"] is not None and value > checks["nmax"])
-      )
-    ):
-      incorrect = True
+    )
+  ):
+    incorrect = True
     
   if (
     not incorrect
     and hasattr(value, "__iter__")
-      and (
-        ("nmin" in checks and checks["nmin"] is not None and len(value) < checks["nmin"])
-        or ("nmax" in checks and checks["nmax"] is not None and len(value) > checks["nmax"])
-      )
-    ):
-      incorrect = True
+    and (
+      ("nmin" in checks and checks["nmin"] is not None and len(value) < checks["nmin"])
+      or ("nmax" in checks and checks["nmax"] is not None and len(value) > checks["nmax"])
+    )
+  ):
+    incorrect = True
 
   if incorrect:
     value = handle_input(
@@ -89,15 +89,15 @@ def check(value, checks, name):
       options=get_check_value("options", None),
       optional=get_check_value("optional", False),
     )
-
-    return value
+    
+  return value
 
 def crawl_and_check(obj: dict, path: list, checks: dict = {}, name=""):
   if len(path) == 0:
     return check(obj, checks, name)
   
   if path[0] not in obj.keys():
-    obj[path[0]] = {}
+    obj[path[0]] = {}  
   obj[path[0]] = crawl_and_check(obj[path[0]], path[1:], checks, path[0])
   
   return obj

@@ -2,7 +2,6 @@ import multiprocessing
 import os
 import re
 from os.path import exists
-from turtle import width
 from typing import Tuple, Any
 
 from moviepy.audio.AudioClip import concatenate_audioclips, CompositeAudioClip
@@ -22,9 +21,9 @@ from utils.videos import save_data
 from utils import settings
 
 console = Console()
-W, H = 1920, 1080
+W, H = 1080, 1920
 
-def name_nomalize(name: str) -> str:
+def name_normalize(name: str) -> str:
   name = re.sub(r'[?\\"%*:|<>]', "", name)
   name = re.sub(r"( [w,W]\s?\/\s?[o,O,0])", r" without", name)
   name = re.sub(r"( [w,W]\s?\/)", r" with", name)
@@ -62,7 +61,7 @@ def make_final_video(
   id = re.sub(r"[^\w\s-]", "", reddit_obj["thread_id"])
   print_step("Creating the final video 🎥")
   VideoFileClip.reW = lambda clip: clip.resize(width=W)
-  VideoFileClip.reh = lambda clip: clip.resize(height=H)
+  VideoFileClip.reH = lambda clip: clip.resize(width=H)
   opacity = settings.config["settings"]["opacity"]
   transition = settings.config["settings"]["transition"]
   background_clip = (
@@ -79,11 +78,11 @@ def make_final_video(
   audio_composite = CompositeAudioClip([audio_concat])
 
   console.log(f"[bold green] Video Will Be: {length} Seconds Long")
-  # Add title to video
+  # add title to video
   image_clips = []
   # Gather all images
   new_opacity = 1 if opacity is None or float(opacity) >= 1 else float(opacity)
-  new_transition = 0 if transition is None or float(transition) >= 2 else float(transition)
+  new_transition = 0 if transition is None or float(transition) > 2 else float(transition)
   image_clips.insert(
     0,
     ImageClip(f"assets/temp/{id}/png/title.png")
@@ -101,19 +100,19 @@ def make_final_video(
       .resize(width=W - 100)
       .set_opacity(new_opacity)
       .crossfadein(new_transition)
-      .crossfadeout(new_transition),
+      .crossfadeout(new_transition)
     )
 
-  img_clips_pos = background_config[3]
+  img_clip_pos = background_config[3]
   image_concat = concatenate_videoclips(image_clips).set_position(
-    img_clips_pos
+    img_clip_pos
   ) # note transition kwarg for delay in imgs
   image_concat.audio = audio_composite
   final = CompositeVideoClip([background_clip, image_concat])
   title = re.sub(r"[^\w\s-]", "", reddit_obj["thread_title"])
   idx = re.sub(r"[^\w\s-]", "", reddit_obj["thread_id"])
 
-  filename = f"{name_nomalize(title)[:251]}.mp4"
+  filename = f"{name_normalize(title)[:251]}.mp4"
   subreddit = settings.config["reddit"]["thread"]["subreddit"]
 
   if not exists(f"./results/{subreddit}"):
@@ -130,11 +129,11 @@ def make_final_video(
     audio_codec="aac",
     audio_bitrate="192k",
     verbose=False,
-    threads=multiprocessing.cpu_count()
+    threads=multiprocessing.cpu_count(),
   )
 
   ffmpeg_extract_subclip(
-    f"asets/temp/{id}/temp.mp4",
+    f"assets/temp/{id}/temp.mp4",
     0,
     length,
     targetname=f"results/{subreddit}/{filename}",

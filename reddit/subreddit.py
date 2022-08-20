@@ -5,7 +5,6 @@ from prawcore.exceptions import ResponseException
 from utils import settings
 import praw
 from praw.models import MoreComments
-from utils import subreddit
 
 from utils.console import print_step, print_substep
 from utils.subreddit import get_subreddit_undone
@@ -55,7 +54,7 @@ def get_subreddit_threads(POST_ID: str):
   # Ask user for subreddit input
   print_step("Getting subreddit threads...")
   if not settings.config["reddit"]["thread"][
-      "subreddit"
+    "subreddit"
   ]:  # note to user. you can have multiple subreddits via reddit.subreddit("redditdev+learnpython")
     try:
       subreddit = reddit.subreddit(
@@ -77,6 +76,7 @@ def get_subreddit_threads(POST_ID: str):
 
   if POST_ID: # would only be called if there are multiple queued posts
     submission = reddit.submission(id=POST_ID)
+    print_step(submission)
   elif (
     settings.config["reddit"]["thread"]["post_id"]
     and len(str(settings.config["reddit"]["thread"]["post_id"]).split("+")) == 1

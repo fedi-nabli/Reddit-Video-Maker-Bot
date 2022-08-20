@@ -1,5 +1,4 @@
 import math
-import re
 from subprocess import Popen
 from os import name
 
@@ -7,7 +6,7 @@ from prawcore import ResponseException
 
 from reddit.subreddit import get_subreddit_threads
 from utils.cleanup import cleanup
-from utils.console import print_markdown, print_step, print_substep
+from utils.console import print_markdown, print_step
 from utils import settings
 from utils.id import id
 

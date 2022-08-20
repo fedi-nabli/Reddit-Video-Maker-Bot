@@ -1,6 +1,5 @@
 import json
 from os.path import exists
-from unittest.loader import VALID_MODULE_NAME
 
 from utils import settings
 from utils.console import print_substep
@@ -39,7 +38,7 @@ def get_subreddit_undone(submissions: list, subreddit, times_checked=0):
         f'This post has under the specified minimum of comments ({settings.config["reddit"]["thread"]["min_comments"]}). Skipping...'
       )
       continue
-    return submissions
+    return submission
   
   print("all submissions have been done going by top submission order")
   VALID_TIME_FILTERS = [
